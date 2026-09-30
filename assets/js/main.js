@@ -20,27 +20,34 @@
 // attribute even when muted, so nudge playback on visibility and on first
 // user interaction as a safety net.
 (function () {
-  var video = document.querySelector('.media video');
-  if (!video) return;
+  var videos = document.querySelectorAll('.media video');
+  if (!videos.length) return;
 
-  function tryPlay() {
+  function tryPlay(video) {
     var p = video.play();
     if (p && p.catch) p.catch(function () {});
   }
 
+  var played = [];
+
   if ('IntersectionObserver' in window) {
     var vio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) tryPlay();
+        if (entry.isIntersecting) tryPlay(entry.target);
       });
     }, { threshold: 0.25 });
-    vio.observe(video);
+    videos.forEach(function (v) { vio.observe(v); });
   } else {
-    tryPlay();
+    videos.forEach(tryPlay);
   }
 
   ['click', 'touchstart', 'keydown', 'scroll'].forEach(function (evt) {
-    document.addEventListener(evt, tryPlay, { once: true, passive: true });
+    document.addEventListener(evt, function () {
+      // Any interaction should get every video rolling, not just the first.
+      if (played.length === videos.length) return;
+      played = Array.prototype.slice.call(videos);
+      played.forEach(tryPlay);
+    }, { once: true, passive: true });
   });
 })();
 

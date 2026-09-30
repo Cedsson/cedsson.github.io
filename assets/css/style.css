@@ -15,9 +15,6 @@
 
   --racing-accent: #7c5cff;
   --racing-accent-2: #ff3d77;
-  --racing-track: #211a2c;
-  --racing-track-edge: #2f2440;
-  --racing-kerb: #ff3d77;
 
   --font-display: 'Space Grotesk', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -387,13 +384,6 @@ code {
 
 .media img,
 .media video { width: 100%; display: block; }
-
-.media--art {
-  background: var(--bg-raise);
-  padding: 20px;
-}
-
-.racing-art { width: 100%; height: auto; display: block; }
 
 /* ---------- Reveal-on-scroll ---------- */
 
