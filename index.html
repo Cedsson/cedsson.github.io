@@ -3,240 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>William Eklund — Krut Engine &amp; Games</title>
-<meta name="description" content="A modular C#/MonoGame engine, a single-player lowpoly FPS, and a client-server lowpoly racer — three connected projects built from scratch by William Eklund.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,2 30,24 2,24%22 fill=%22%233fd0c9%22/></svg>">
+<title>William Eklund, game programmer</title>
+<meta name="description" content="William Eklund, freelance game programmer (C#, MonoGame, Unity). Gameplay, AI, multiplayer, physics and engine work.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,3 29,27 3,27%22 fill=%22%23c8452c%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<div class="bg-grid" aria-hidden="true"></div>
+<div class="page">
 
-<header class="nav" id="nav">
-  <a href="#top" class="nav__brand">
-    <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 30,24 2,24" fill="currentColor"/></svg>
-    WILLIAM
-  </a>
-  <nav class="nav__links">
-    <a href="#engine">Engine</a>
-    <a href="#commute">Commute</a>
-    <a href="#racing">Racing</a>
+<header class="top">
+  <a href="./" class="name">William Eklund</a>
+  <nav>
+    <a href="#work">work</a> /
+    <a href="#engine">projects</a> /
+    <a href="#contact">contact</a>
   </nav>
 </header>
 
-<main>
+<section class="intro">
+  <p>
+    Hi, I'm William. I'm a game programmer working in C#, and I take on freelance work.
+    I live in Sweden and work remotely.
+  </p>
+  <p>
+    Most of what I know comes from building my own engine, <strong>Krut.Engine</strong>, on top of
+    MonoGame, and two games on it: <a href="#commute">Commute</a>, a single-player shooter, and an
+    online racing game. That means I've had to write the boring parts as well as the fun ones:
+    rendering, physics, AI, netcode, audio, tools and build setup.
+  </p>
+  <p>
+    If you have a game or a prototype that needs another programmer, <a href="#contact">send me a message</a>.
+  </p>
+</section>
 
-  <section class="hero" id="top">
-    <canvas id="lowpoly-canvas" aria-hidden="true"></canvas>
-    <div class="hero__content">
-      <p class="eyebrow">Solo developer &middot; C# / MonoGame / Unity</p>
-      <h1>One engine.<br>Two very different games.</h1>
-      <p class="hero__lede">
-        I build engine-first: <strong>Krut.Engine</strong> is a modular, headless C# engine
-        written from scratch, and it powers everything below — a single-player lowpoly FPS
-        with full enemy AI, and a client-server lowpoly racer built for real online play.
-        Same renderer, same physics, same flat-colour art direction. Different games entirely.
-      </p>
-      <div class="hero__cta">
-        <a href="#engine" class="btn btn--primary">See the projects</a>
-      </div>
-    </div>
-    <a href="#engine" class="scroll-cue" aria-label="Scroll to content">
-      <span></span>
-    </a>
-  </section>
+<section class="project" id="work">
+  <h2>What I can help with</h2>
+  <p class="meta">C# / .NET &middot; MonoGame &middot; Unity</p>
 
-  <!-- ================= ENGINE ================= -->
-  <section class="project project--engine" id="engine">
-    <div class="project__inner">
-      <div class="project__header reveal">
-        <p class="eyebrow eyebrow--engine">The foundation</p>
-        <h2>Krut.Engine</h2>
-        <p class="project__tagline">A modular, headless game engine built on MonoGame — designed for fast iteration and independent game development.</p>
-      </div>
+  <ul>
+    <li><b>Gameplay programming:</b> weapons, player controllers, game feel, the stuff that makes it fun to hold a controller.</li>
+    <li><b>Enemy and NPC AI:</b> navmesh pathfinding, state machines, enemies that react to the level instead of just running at you.</li>
+    <li><b>Multiplayer:</b> client/server setups, prediction and reconciliation, lag compensation, dedicated servers.</li>
+    <li><b>Physics:</b> vehicles, character controllers, ragdolls, deterministic simulation.</li>
+    <li><b>Engine and tools work:</b> rendering features, lighting, level import, editor tools, performance problems.</li>
+    <li><b>Prototypes:</b> getting an idea playable quickly so you can find out if it's worth making.</li>
+  </ul>
 
-      <div class="project__body">
-        <div class="project__col reveal">
-          <p>
-            Every system is self-contained: rendering, physics, audio, entities, networking,
-            navigation and asset loading all live behind their own boundary, so a game only
-            takes what it needs. Games inherit from a shared <code>Core</code> loop and override
-            what they actually want to change.
-          </p>
-          <p>
-            Ships as Native AOT — no .NET install required to run a built game — and targets
-            .NET 9 throughout. Every subsystem carries its own xUnit test suite, run before
-            anything ships.
-          </p>
+  <p>
+    I'm happy to jump into an existing codebase or start something from scratch. I write tests where
+    they make sense, keep things readable for whoever comes after me, and tell you early if
+    something is going to take longer than planned.
+  </p>
+</section>
 
-          <div class="stat-row reveal">
-            <div class="stat"><span class="stat__num">10</span><span class="stat__label">independent subsystems</span></div>
-            <div class="stat"><span class="stat__num">1</span><span class="stat__label">shipped prototype</span></div>
-            <div class="stat"><span class="stat__num">AOT</span><span class="stat__label">native, no runtime install</span></div>
-          </div>
-        </div>
+<h2 class="divider">Projects</h2>
+<p class="small">The things I've built on my own. They're the best way to see how I work.</p>
 
-        <div class="project__col reveal">
-          <ul class="feature-list feature-list--engine">
-            <li><strong>Level Editor</strong> — in development: hot reload, 3D gizmos, terrain sculpting and play-in-editor</li>
-            <li><strong>Rendering</strong> — instanced geometry, PBR materials, dynamic/baked lighting, particles, decals, post-processing</li>
-            <li><strong>Physics</strong> — rigid bodies (Jitter2), capsule character controller, ragdolls</li>
-            <li><strong>Audio</strong> — 3D positional sound with occlusion, streamed music, reverb simulation</li>
-            <li><strong>Networking</strong> — client/server sessions, fixed tick clock, quantized messages, auto-reconnect</li>
-            <li><strong>Navigation</strong> — navmesh pathfinding for AI (Recast & Detour)</li>
-            <li><strong>Levels</strong> — TrenchBroom <code>.map</code>/<code>.bsp</code> import, portal visibility culling, spline support for tracks and paths</li>
-          </ul>
-        </div>
-      </div>
+<!-- ================= ENGINE ================= -->
+<section class="project" id="engine">
+  <h2>Krut.Engine</h2>
+  <p class="meta">engine &middot; C# / .NET 9 &middot; closed source</p>
 
-      <div class="chip-row reveal">
-        <span class="chip">C# / .NET 9</span>
-        <span class="chip">MonoGame DesktopGL</span>
-        <span class="chip">xUnit</span>
-        <span class="chip">PBR</span>
-        <span class="chip">Splines</span>
-        <span class="chip">Jitter2</span>
-        <span class="chip">DotRecast</span>
-        <span class="chip">LiteNetLib</span>
-        <span class="chip">ImGui.NET</span>
-        <span class="chip">AssimpNetter</span>
-        <span class="chip">Sledge.Formats</span>
-        <span class="chip">NVorbis</span>
-      </div>
+  <p>
+    The idea is that every system (rendering, physics, audio, networking, navigation, asset
+    loading and so on) lives in its own project and doesn't know about the others unless it has to.
+    A game pulls in what it needs and inherits from a shared <code>Core</code> loop, overriding the
+    bits it wants to change. Both games include the engine as a git submodule.
+  </p>
+  <p>
+    Builds are Native AOT, so you don't need .NET installed to run them. Each subsystem has
+    its own xUnit tests, and they all have to pass before anything ships.
+  </p>
 
-      <p class="project__note reveal">Proprietary — closed source. Powers both games below as a git submodule.</p>
-    </div>
-  </section>
+  <p>What's in it so far:</p>
+  <ul>
+    <li><b>Rendering:</b> instancing, PBR materials, baked and dynamic lighting, particles, decals, post-processing.</li>
+    <li><b>Physics:</b> Jitter2 rigid bodies, a capsule character controller, ragdolls.</li>
+    <li><b>Audio:</b> 3D sound with occlusion, streamed music, reverb.</li>
+    <li><b>Networking:</b> client/server sessions on LiteNetLib, fixed tick, quantized messages, reconnects.</li>
+    <li><b>Navigation:</b> navmesh pathfinding via DotRecast (Recast &amp; Detour).</li>
+    <li><b>Levels:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, portal culling, splines for tracks and paths.</li>
+    <li><b>Editor:</b> work in progress. Hot reload, gizmos, terrain sculpting, play-in-editor.</li>
+  </ul>
 
-  <!-- ================= COMMUTE / FPS ================= -->
-  <section class="project project--fps" id="commute">
-    <div class="project__inner">
-      <div class="project__header reveal">
-        <p class="eyebrow eyebrow--fps">Krut.FPS</p>
-        <h2>Commute</h2>
-        <p class="project__tagline">A Source engine–inspired single-player FPS campaign, lowpoly and flat-coloured, built to show the engine off from start to end card.</p>
-        <a href="https://cedsson.itch.io/commute" target="_blank" rel="noopener" class="btn btn--fps">Play the demo on itch.io ↗</a>
-      </div>
+  <p class="small">
+    Libraries I lean on: MonoGame DesktopGL, Jitter2, DotRecast, LiteNetLib, ImGui.NET,
+    AssimpNetter, Sledge.Formats, NVorbis, xUnit.
+  </p>
+</section>
 
-      <div class="media reveal">
-        <video src="assets/media/commute-gameplay.webm" poster="assets/media/commute-poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="Commute gameplay: combat inside a lowpoly subway station"></video>
-      </div>
+<!-- ================= COMMUTE ================= -->
+<section class="project" id="commute">
+  <h2>Commute</h2>
+  <p class="meta">single-player FPS &middot; prototype &middot; <a href="https://cedsson.itch.io/commute" target="_blank" rel="noopener">play the demo on itch.io</a></p>
 
-      <div class="project__body">
-        <div class="project__col reveal">
-          <p>
-            The demo level, <strong>Subway Station</strong>, is a full ticket hall → platform →
-            tunnels → depot campaign built in TrenchBroom, with its own hand-fit texture set,
-            baked lightmaps with real shadows, and Source-style button puzzles, live wires
-            and explosive barrels along the way.
-          </p>
-          <p>
-            Enemies run on navmesh AI with three archetypes — melee, ranged, and suicide
-            bombers that beep faster as they close in — and react to the space around them:
-            they avoid live electricity, hold ready positions instead of all rushing a hidden
-            player, and only throw grenades with a clear path and line of sight.
-          </p>
-          <div class="stat-row reveal">
-            <div class="stat"><span class="stat__num">Custom</span><span class="stat__label">GI lightmap baker</span></div>
-            <div class="stat"><span class="stat__num">Procedural</span><span class="stat__label">VFX — explosions, scorch, blood</span></div>
-          </div>
-        </div>
+  <figure>
+    <video src="assets/media/commute-gameplay.webm" poster="assets/media/commute-poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="Commute gameplay: combat inside a lowpoly subway station"></video>
+    <figcaption>Fighting through the subway station level.</figcaption>
+  </figure>
 
-        <div class="project__col reveal">
-          <ul class="feature-list feature-list--fps">
-            <li><strong>Weapons</strong> — baton, pistol, SMG, shotgun, grenade launcher and hand grenades, with ADS, casings, ricochets and tracers</li>
-            <li><strong>Combat</strong> — hit flash, hitmarkers, kill hit-stop, FOV punch, chained explosions with scorch marks that follow geometry</li>
-            <li><strong>Lighting</strong> — sun, flashlight, muzzle flash and explosions casting soft real-time shadows on everything</li>
-            <li><strong>Physics</strong> — Jitter2 ragdolls, dismemberment, physics crates and pickups you can carry and throw</li>
-            <li><strong>Audio</strong> — occluded 3D sound, per-space reverb (room, corridor, hall)</li>
-            <li><strong>UI</strong> — Source-style pickup feed, full options menu, in-game dev console</li>
-          </ul>
-        </div>
-      </div>
+  <p>
+    Commute started as a way to test the engine with a real game, and it borrows a lot from
+    Source engine games. The demo is one level, <i>Subway Station</i>:
+    you go from the ticket hall down to the platform, through the tunnels and out into the depot.
+    I built it in TrenchBroom with a texture set I made for it, and the lighting is baked with
+    a GI lightmapper I wrote myself. There are button puzzles, live wires and explosive barrels
+    along the way, because of course there are.
+  </p>
+  <p>
+    There are three kinds of enemies: melee, ranged, and bombers that beep faster the closer they
+    get. They path on the navmesh and try to be at least a little smart about it. They stay away from
+    live electricity, they don't all rush you when they can't see you, and they only throw grenades
+    when they actually have a clear line.
+  </p>
 
-      <div class="chip-row reveal">
-        <span class="chip">TrenchBroom</span>
-        <span class="chip">Baked lightmaps</span>
-        <span class="chip">Navmesh AI</span>
-        <span class="chip">Ragdoll physics</span>
-        <span class="chip">Native AOT build</span>
-      </div>
+  <p>Other stuff in there:</p>
+  <ul>
+    <li>Baton, pistol, SMG, shotgun, grenade launcher and hand grenades. ADS, shell casings, ricochets, tracers.</li>
+    <li>Hitmarkers, hit flash, a short hit-stop on kills, chained explosions that leave scorch marks.</li>
+    <li>Soft real-time shadows from the sun, your flashlight, muzzle flashes and explosions.</li>
+    <li>Ragdolls, dismemberment, and crates you can pick up and throw.</li>
+    <li>Different reverb for rooms, corridors and halls.</li>
+    <li>A Source-style pickup feed, an options menu and a dev console.</li>
+  </ul>
+</section>
 
-      <p class="project__note reveal">Engine prototype.</p>
-    </div>
-  </section>
+<!-- ================= RACING ================= -->
+<section class="project" id="racing">
+  <h2>Low Poly Racer <span class="aside">(not the real name)</span></h2>
+  <p class="meta">online multiplayer racing &middot; in development</p>
 
-  <!-- ================= RACING ================= -->
-  <section class="project project--racing" id="racing">
-    <div class="project__inner">
-      <div class="project__header reveal">
-        <p class="eyebrow eyebrow--racing">Krut.Racing</p>
-        <h2>Low Poly Racer <span class="working-title">(working title)</span></h2>
-        <p class="project__tagline">A lobby-based, client-server multiplayer simcade spec racing game, lowpoly and flat-coloured.</p>
-      </div>
+  <figure>
+    <video src="assets/media/Racing-Gameplay.webm" poster="assets/media/Racing-poster.png" autoplay loop muted playsinline preload="auto" aria-label="Low Poly Racer gameplay: a lowpoly car racing around a track"></video>
+    <figcaption>Gameplay from the current build.</figcaption>
+  </figure>
 
-      <div class="media reveal">
-        <video src="assets/media/Racing-Gameplay.webm" poster="assets/media/Racing-poster.png" autoplay loop muted playsinline preload="auto" aria-label="Low Poly Racer gameplay: a lowpoly car racing around a track"></video>
-      </div>
+  <p>
+    This one is a spec racer, meaning every car performs exactly the same. You can change how your
+    car looks and sounds, but not how it drives. The server checks for that, and clients never get
+    to touch vehicle parameters.
+  </p>
+  <p>
+    The car physics is my own raycast-wheel setup with suspension, tyre grip, weight transfer and
+    slip angles, aiming somewhere between arcade and sim. It's deterministic, which means the same
+    code runs headless on the server. Each race gets its own server process, and clients only send
+    their inputs.
+  </p>
+  <p>
+    Most of the work so far has gone into the netcode. It does client-side prediction with
+    reconciliation, interpolates between snapshots and sends deltas, and I'm tuning it to feel okay
+    at around 150&ndash;200&nbsp;ms ping. The general lag-compensation parts (jitter buffer, clock
+    sync, prediction) live in the engine, so the game mostly just picks numbers.
+  </p>
+  <p>
+    The loop goes matchmaking, lobby, track vote, qualifying, race, results. AI drivers use
+    the same car simulation as players instead of following a scripted line, and you can
+    host custom lobbies and fill the empty slots with AI.
+  </p>
+</section>
 
-      <div class="project__body">
-        <div class="project__col reveal">
-          <p>
-            Spec racing means every car has identical performance — acceleration, braking,
-            grip, top speed and durability are the same across the board. What differs is how
-            they look: bodies, liveries and paint are purely cosmetic, and cars can be modded
-            with custom sound and other cosmetic touches. Automated checks reject anything
-            that would give one car an edge — clients can't touch vehicle parameters.
-          </p>
-          <p>
-            Vehicles run a custom wheel-raycast simulation — suspension, tyre grip, weight
-            transfer, slip angle, friction ellipse — built as a simcade rather than arcade
-            physics, and it's fully deterministic so it can run headless on a dedicated server.
-          </p>
-          <div class="stat-row reveal">
-            <div class="stat"><span class="stat__num">150–200ms</span><span class="stat__label">RTT the netcode targets</span></div>
-            <div class="stat"><span class="stat__num">100%</span><span class="stat__label">deterministic headless physics</span></div>
-          </div>
-        </div>
+<section class="project" id="contact">
+  <h2>Contact</h2>
+  <p>
+    The easiest way to reach me is email:
+    <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>.
+    Tell me a bit about the project, what you need help with and roughly when, and I'll get back to you.
+  </p>
+</section>
 
-        <div class="project__col reveal">
-          <ul class="feature-list feature-list--racing">
-            <li><strong>Authoritative server</strong> — one headless process per race; clients send input only</li>
-            <li><strong>Netcode</strong> — client-side prediction &amp; reconciliation, snapshot interpolation, delta snapshots</li>
-            <li><strong>Player loop</strong> — matchmaking → lobby → track vote → qualifying → race → signed results</li>
-            <li><strong>AI drivers</strong> — opponents run the exact same vehicle simulation as players, no scripted driving</li>
-            <li><strong>Custom Game</strong> — browsable lobbies you can fill with AI, no ranked rewards</li>
-            <li><strong>Lag compensation</strong> — reusable engine primitives (jitter buffer, clock sync, prediction/reconciliation); the game just tunes the parameters</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="chip-row reveal">
-        <span class="chip">Client-server</span>
-        <span class="chip">Deterministic physics</span>
-        <span class="chip">LiteNetLib</span>
-        <span class="chip">Flatcolor shading</span>
-        <span class="chip">Spec racing</span>
-      </div>
-
-      <p class="project__note reveal">Engine prototype. In active development.</p>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="site-footer__inner">
-    <div class="site-footer__brand">
-      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 30,24 2,24" fill="currentColor"/></svg>
-      WILLIAM EKLUND
-    </div>
-    <p>Krut.Engine, Krut.FPS and Krut.Racing — built from scratch in C#.</p>
-  </div>
+<footer>
+  <p>
+    Elsewhere: <a href="https://cedsson.itch.io" target="_blank" rel="noopener">itch.io</a>.
+  </p>
 </footer>
+
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>
