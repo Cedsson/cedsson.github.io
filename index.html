@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>William Eklund, game programmer</title>
-<meta name="description" content="William Eklund, freelance game programmer (C#, MonoGame, Unity). Gameplay, AI, multiplayer, physics and engine work.">
+<title>Krut, a 3D game engine in C#</title>
+<meta name="description" content="Krut.Engine, a 3D game engine in C# on MonoGame, and the games built on it: Commute, an FPS, and an online racing game. By William Eklund.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,3 29,27 3,27%22 fill=%22%23c8452c%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,85 +16,65 @@
 <div class="page">
 
 <header class="top">
-  <a href="./" class="name">William Eklund</a>
+  <a href="./" class="name"><span class="mark">&#9650;</span> Krut</a>
   <nav>
-    <a href="#work">work</a> /
-    <a href="#engine">projects</a> /
+    <a href="#engine">engine</a> /
+    <a href="#games">games</a> /
+    <a href="#next">roadmap</a> /
     <a href="#contact">contact</a>
   </nav>
 </header>
 
 <section class="intro">
   <p>
-    Hi, I'm William. I'm a game programmer working in C#, and I take on freelance work.
-    I live in Sweden and work remotely.
+    <strong>Krut</strong> is a 3D game engine written in C#, on top of MonoGame. It's built for
+    games you play up close: first-person shooters, first-person melee, 3D roguelikes, and
+    driving.
   </p>
   <p>
-    Most of what I know comes from building my own engine, <strong>Krut.Engine</strong>, on top of
-    MonoGame, and two games on it: <a href="#commute">Commute</a>, a single-player shooter, and an
-    online racing game. That means I've had to write the boring parts as well as the fun ones:
-    rendering, physics, AI, netcode, audio, tools and build setup.
+    I'm William, and I'm building it on my own in Sweden. Krut isn't a tech demo. Two games run on
+    it, and almost every feature in it exists because one of them needed it. Below is what the
+    engine does today, the games that run on it, and where it's going next.
   </p>
-  <p>
-    If you have a game or a prototype that needs another programmer, <a href="#contact">send me a message</a>.
+  <p class="facts">
+    C# / .NET 9 &middot; MonoGame 3.8.6 &middot; Vulkan with OpenGL fallback &middot; Native AOT &middot; Windows
   </p>
 </section>
-
-<section class="project" id="work">
-  <h2>What I can help with</h2>
-  <p class="meta">C# / .NET &middot; MonoGame &middot; Unity</p>
-
-  <ul>
-    <li><b>Gameplay programming:</b> weapons, player controllers, game feel, the stuff that makes it fun to hold a controller.</li>
-    <li><b>Enemy and NPC AI:</b> navmesh pathfinding, state machines, enemies that react to the level instead of just running at you.</li>
-    <li><b>Multiplayer:</b> client/server setups, prediction and reconciliation, lag compensation, dedicated servers.</li>
-    <li><b>Physics:</b> vehicles, character controllers, ragdolls, deterministic simulation.</li>
-    <li><b>Engine and tools work:</b> rendering features, lighting, level import, editor tools, performance problems.</li>
-    <li><b>Prototypes:</b> getting an idea playable quickly so you can find out if it's worth making.</li>
-  </ul>
-
-  <p>
-    I'm happy to jump into an existing codebase or start something from scratch. I write tests where
-    they make sense, keep things readable for whoever comes after me, and tell you early if
-    something is going to take longer than planned.
-  </p>
-</section>
-
-<h2 class="divider">Projects</h2>
-<p class="small">The things I've built on my own. They're the best way to see how I work.</p>
 
 <!-- ================= ENGINE ================= -->
 <section class="project" id="engine">
-  <h2>Krut.Engine</h2>
-  <p class="meta">engine &middot; C# / .NET 9 &middot; closed source</p>
+  <h2>The engine</h2>
+  <p class="meta">Krut.Engine &middot; closed source &middot; ~54k lines</p>
 
   <p>
-    The idea is that every system (rendering, physics, audio, networking, navigation, asset
-    loading and so on) lives in its own project and doesn't know about the others unless it has to.
-    A game pulls in what it needs and inherits from a shared <code>Core</code> loop, overriding the
-    bits it wants to change. Both games include the engine as a git submodule.
-  </p>
-  <p>
-    Builds are Native AOT, so you don't need .NET installed to run them. Each subsystem has
-    its own xUnit tests, and they all have to pass before anything ships.
+    Every system (rendering, physics, audio, networking, navigation and asset loading) is a
+    separate part that only knows about the others when it has to. A game includes the engine as a
+    git submodule, inherits from a shared <code>Core</code> loop and overrides the parts it wants to
+    change. Builds are Native AOT, so players don't need .NET installed, and every subsystem
+    has xUnit tests that must pass before anything ships.
   </p>
 
-  <p>What's in it so far:</p>
   <ul>
-    <li><b>Rendering:</b> instancing, PBR materials, baked and dynamic lighting, particles, decals, post-processing.</li>
-    <li><b>Physics:</b> Jitter2 rigid bodies, a capsule character controller, ragdolls.</li>
-    <li><b>Audio:</b> 3D sound with occlusion, streamed music, reverb.</li>
-    <li><b>Networking:</b> client/server sessions on LiteNetLib, fixed tick, quantized messages, reconnects.</li>
-    <li><b>Navigation:</b> navmesh pathfinding via DotRecast (Recast &amp; Detour).</li>
-    <li><b>Levels:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, portal culling, splines for tracks and paths.</li>
-    <li><b>Editor:</b> work in progress. Hot reload, gizmos, terrain sculpting, play-in-editor.</li>
+    <li><b>Rendering:</b> a forward renderer with MSAA, PBR materials, baked GI lightmaps from my own lightmapper, light probes, dynamic soft shadows, particles, decals and post-processing.</li>
+    <li><b>Graphics backends:</b> Vulkan first, with OpenGL as an automatic fallback in the same build. If Vulkan fails to start on a machine, the next launch uses OpenGL without asking.</li>
+    <li><b>Visibility:</b> portal culling for indoor levels, plus occlusion culling.</li>
+    <li><b>Physics:</b> Jitter2 rigid bodies, a capsule character controller, ragdolls, and a deterministic raycast-wheel vehicle model.</li>
+    <li><b>Audio:</b> FMOD, 3D sound with occlusion, and reverb zones per room type.</li>
+    <li><b>Networking:</b> client/server sessions on LiteNetLib with a fixed tick, quantized messages, prediction, reconciliation, a jitter buffer and clock sync.</li>
+    <li><b>AI:</b> navmesh pathfinding via DotRecast (Recast &amp; Detour).</li>
+    <li><b>Levels:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, and splines for tracks and paths.</li>
+    <li><b>Entities:</b> classic inheritance plus components and a transform hierarchy. A source generator registers a game's own entity types for scenes and the editor at compile time, with no runtime reflection, so it stays AOT-safe.</li>
+    <li><b>Scenes:</b> <code>.krut</code>, Krut's own versioned scene format, layered on top of brush geometry.</li>
   </ul>
 
   <p class="small">
-    Libraries I lean on: MonoGame DesktopGL, Jitter2, DotRecast, LiteNetLib, ImGui.NET,
-    AssimpNetter, Sledge.Formats, NVorbis, xUnit.
+    Built on: MonoGame, Jitter2, DotRecast, LiteNetLib, FMOD, ImGui.NET, AssimpNetter,
+    Sledge.Formats, xUnit.
   </p>
 </section>
+
+<h2 class="divider" id="games">Games on Krut</h2>
+<p class="small">The games that drive the engine: when one of them needs a feature, the feature goes into Krut.</p>
 
 <!-- ================= COMMUTE ================= -->
 <section class="project" id="commute">
@@ -107,34 +87,29 @@
   </figure>
 
   <p>
-    Commute started as a way to test the engine with a real game, and it borrows a lot from
-    Source engine games. The demo is one level, <i>Subway Station</i>:
-    you go from the ticket hall down to the platform, through the tunnels and out into the depot.
-    I built it in TrenchBroom with a texture set I made for it, and the lighting is baked with
-    a GI lightmapper I wrote myself. There are button puzzles, live wires and explosive barrels
-    along the way, because of course there are.
+    Commute is how the engine gets tested in a real game, and it borrows a lot from Source engine
+    games. The demo is one level, <i>Subway Station</i>: from the ticket hall down to the platform,
+    through the tunnels and out into the depot. It's built in TrenchBroom with a custom texture
+    set and lit by Krut's own GI lightmapper. Along the way there are button puzzles, live wires and
+    explosive barrels.
   </p>
   <p>
-    There are three kinds of enemies: melee, ranged, and bombers that beep faster the closer they
-    get. They path on the navmesh and try to be at least a little smart about it. They stay away from
-    live electricity, they don't all rush you when they can't see you, and they only throw grenades
-    when they actually have a clear line.
+    There are three kinds of enemies: melee, ranged, and bombers that beep faster as they get
+    closer. They path on the navmesh, stay away from live electricity, and don't all rush you when
+    they can't see you. They only throw a grenade when they have a clear line.
   </p>
 
-  <p>Other stuff in there:</p>
   <ul>
-    <li>Baton, pistol, SMG, shotgun, grenade launcher and hand grenades. ADS, shell casings, ricochets, tracers.</li>
-    <li>Hitmarkers, hit flash, a short hit-stop on kills, chained explosions that leave scorch marks.</li>
-    <li>Soft real-time shadows from the sun, your flashlight, muzzle flashes and explosions.</li>
+    <li>Baton, pistol, SMG, shotgun, grenade launcher and hand grenades, with ADS, shell casings, ricochets and tracers.</li>
+    <li>Hitmarkers, hit-stop on kills, chained explosions that leave scorch marks.</li>
+    <li>Soft real-time shadows from the sun, the flashlight, muzzle flashes and explosions.</li>
     <li>Ragdolls, dismemberment, and crates you can pick up and throw.</li>
-    <li>Different reverb for rooms, corridors and halls.</li>
-    <li>A Source-style pickup feed, an options menu and a dev console.</li>
   </ul>
 </section>
 
 <!-- ================= RACING ================= -->
 <section class="project" id="racing">
-  <h2>Low Poly Racer <span class="aside">(not the real name)</span></h2>
+  <h2>Low Poly Racer <span class="aside">(working title)</span></h2>
   <p class="meta">online multiplayer racing &middot; in development</p>
 
   <figure>
@@ -143,41 +118,56 @@
   </figure>
 
   <p>
-    This one is a spec racer, meaning every car performs exactly the same. You can change how your
-    car looks and sounds, but not how it drives. The server checks for that, and clients never get
-    to touch vehicle parameters.
+    A spec racer: every car performs exactly the same. You can change how your car looks and
+    sounds, but not how it drives. The server enforces this, because clients never touch vehicle
+    parameters.
   </p>
   <p>
-    The car physics is my own raycast-wheel setup with suspension, tyre grip, weight transfer and
-    slip angles, aiming somewhere between arcade and sim. It's deterministic, which means the same
-    code runs headless on the server. Each race gets its own server process, and clients only send
-    their inputs.
+    The car runs on Krut's deterministic raycast-wheel physics, with suspension, tyre grip, weight
+    transfer and slip angles, aiming between arcade and sim. Because it's deterministic, the
+    same code runs headless on a dedicated server per race, and clients only send their inputs.
+    The netcode is tuned to feel right at 150&ndash;200&nbsp;ms ping. The loop goes matchmaking,
+    lobby, track vote, qualifying, race, results, and AI drivers use the same car simulation as
+    players.
   </p>
+</section>
+
+<!-- ================= ROADMAP ================= -->
+<section class="project" id="next">
+  <h2>What's next: Krut 2.0</h2>
+  <p class="meta">in progress</p>
+
   <p>
-    Most of the work so far has gone into the netcode. It does client-side prediction with
-    reconciliation, interpolates between snapshots and sends deltas, and I'm tuning it to feel okay
-    at around 150&ndash;200&nbsp;ms ping. The general lag-compensation parts (jitter buffer, clock
-    sync, prediction) live in the engine, so the game mostly just picks numbers.
+    Up to now, levels have been made in TrenchBroom and models in Blender, with the engine loading
+    the results. Krut 2.0 adds an editor of its own and turns the engine into a general 3D engine,
+    not just the engine behind two specific games.
   </p>
-  <p>
-    The loop goes matchmaking, lobby, track vote, qualifying, race, results. AI drivers use
-    the same car simulation as players instead of following a scripted line, and you can
-    host custom lobbies and fill the empty slots with AI.
-  </p>
+
+  <ul>
+    <li><b>Krut Editor</b> <span class="status">building now</span><br>
+      Viewport, gizmos, outliner, an inspector generated from your own code, undo for everything, and saving to <code>.krut</code>. Drop a model in and it becomes an entity.</li>
+    <li><b>Compile inside the editor</b> <span class="status">planned</span><br>
+      Hit Build, and your game code reloads while the scene stays where it was. Then publish a finished Native AOT build from the same window.</li>
+    <li><b>Terrain and roads</b> <span class="status">planned</span><br>
+      Sculpting, layered texture painting, foliage scatter, and splines that carve roads into the terrain.</li>
+    <li><b>Forward+ rendering</b> <span class="status">planned</span><br>
+      Hundreds of dynamic lights without giving up MSAA.</li>
+    <li><b>Prefabs and play-in-editor</b> <span class="status">planned</span><br>
+      Rooms and kits as prefabs, which a seeded generator assembles into roguelike levels at runtime.</li>
+  </ul>
 </section>
 
 <section class="project" id="contact">
   <h2>Contact</h2>
   <p>
-    The easiest way to reach me is email:
+    Questions about Krut, interested in the games, or want to work together? Email me at
     <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>.
-    Tell me a bit about the project, what you need help with and roughly when, and I'll get back to you.
   </p>
 </section>
 
 <footer>
   <p>
-    Elsewhere: <a href="https://cedsson.itch.io" target="_blank" rel="noopener">itch.io</a>.
+    Krut is made by William Eklund. Elsewhere: <a href="https://cedsson.itch.io" target="_blank" rel="noopener">itch.io</a>.
   </p>
 </footer>
 
