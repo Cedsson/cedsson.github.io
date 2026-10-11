@@ -27,14 +27,12 @@
 
 <section class="intro">
   <p>
-    <strong>Krut</strong> is a 3D game engine written in C#, on top of MonoGame. It's built for
-    games you play up close: first-person shooters, first-person melee, 3D roguelikes, and
-    driving.
+    <strong>Krut</strong> is a 3D game engine written in C#, on top of MonoGame. It's aimed at
+    first-person shooters, first-person melee games, 3D roguelikes and racing games.
   </p>
   <p>
-    I'm William, and I'm building it on my own in Sweden. Krut isn't a tech demo. Two games run on
-    it, and almost every feature in it exists because one of them needed it. Below is what the
-    engine does today, the games that run on it, and where it's going next.
+    I'm William, and I'm building it on my own in Sweden. Two games run on it so far,
+    and below is what the engine does today, the games that run on it, and where it's going next.
   </p>
   <p class="facts">
     C# / .NET 9 &middot; MonoGame 3.8.6 &middot; Vulkan with OpenGL fallback &middot; Native AOT &middot; Windows
@@ -74,7 +72,6 @@
 </section>
 
 <h2 class="divider" id="games">Games on Krut</h2>
-<p class="small">The games that drive the engine: when one of them needs a feature, the feature goes into Krut.</p>
 
 <!-- ================= COMMUTE ================= -->
 <section class="project" id="commute">
@@ -139,19 +136,19 @@
 
   <p>
     Up to now, levels have been made in TrenchBroom and models in Blender, with the engine loading
-    the results. Krut 2.0 adds an editor of its own and turns the engine into a general 3D engine,
-    not just the engine behind two specific games.
+    the results. Krut 2.0 adds an editor of its own and makes the engine usable for other kinds of
+    3D games too.
   </p>
 
   <ul>
     <li><b>Krut Editor</b> <span class="status">building now</span><br>
-      Viewport, gizmos, outliner, an inspector generated from your own code, undo for everything, and saving to <code>.krut</code>. Drop a model in and it becomes an entity.</li>
+      Viewport, gizmos, outliner, an inspector generated from your own code, undo for everything, and saving to <code>.krut</code>. Dropping a model into the scene creates an entity for it.</li>
     <li><b>Compile inside the editor</b> <span class="status">planned</span><br>
-      Hit Build, and your game code reloads while the scene stays where it was. Then publish a finished Native AOT build from the same window.</li>
+      Build the game code from the editor and reload it without losing the open scene, and publish a Native AOT build from there.</li>
     <li><b>Terrain and roads</b> <span class="status">planned</span><br>
       Sculpting, layered texture painting, foliage scatter, and splines that carve roads into the terrain.</li>
     <li><b>Forward+ rendering</b> <span class="status">planned</span><br>
-      Hundreds of dynamic lights without giving up MSAA.</li>
+      Tiled light culling so a scene can have many more dynamic lights, while keeping MSAA.</li>
     <li><b>Prefabs and play-in-editor</b> <span class="status">planned</span><br>
       Rooms and kits as prefabs, which a seeded generator assembles into roguelike levels at runtime.</li>
   </ul>
@@ -160,7 +157,7 @@
 <section class="project" id="contact">
   <h2>Contact</h2>
   <p>
-    Questions about Krut, interested in the games, or want to work together? Email me at
+    You can reach me by email at
     <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>.
   </p>
 </section>
