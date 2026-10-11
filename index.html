@@ -52,22 +52,29 @@
     has xUnit tests that must pass before anything ships.
   </p>
 
+  <p>
+    Most of Krut is written by hand, by me. I use libraries for a few low-level pieces, listed
+    further down, but the systems built on top of them are my own code.
+  </p>
+
   <ul>
-    <li><b>Rendering:</b> a forward renderer with MSAA, PBR materials, baked GI lightmaps from my own lightmapper, light probes, dynamic soft shadows, particles, decals and post-processing.</li>
-    <li><b>Graphics backends:</b> Vulkan first, with OpenGL as an automatic fallback in the same build. If Vulkan fails to start on a machine, the next launch uses OpenGL without asking.</li>
+    <li><b>Rendering:</b> my own forward renderer with MSAA, PBR materials, dynamic soft shadows, particles, decals, bloom and colour grading. MonoGame only provides the graphics API layer.</li>
+    <li><b>Lighting:</b> my own GI lightmapper that bakes the levels, light probes for moving objects, and light styles for flickering and switchable lights.</li>
+    <li><b>Graphics backends:</b> Vulkan first, with OpenGL as an automatic fallback in the same build. If Vulkan fails to start on a machine, the next launch uses OpenGL.</li>
     <li><b>Visibility:</b> portal culling for indoor levels, plus occlusion culling.</li>
-    <li><b>Physics:</b> Jitter2 rigid bodies, a capsule character controller, ragdolls, and a deterministic raycast-wheel vehicle model.</li>
-    <li><b>Audio:</b> FMOD, 3D sound with occlusion, and reverb zones per room type.</li>
-    <li><b>Networking:</b> client/server sessions on LiteNetLib with a fixed tick, quantized messages, prediction, reconciliation, a jitter buffer and clock sync.</li>
-    <li><b>AI:</b> navmesh pathfinding via DotRecast (Recast &amp; Detour).</li>
+    <li><b>Collision and movement:</b> my own capsule-vs-triangle collision against level geometry with a triangle BVH, and the character controller on top of it.</li>
+    <li><b>Networking:</b> the client/server layer is mine: fixed tick, quantized messages, client prediction, reconciliation, snapshot interpolation, a jitter buffer and clock sync. LiteNetLib only carries the UDP packets.</li>
+    <li><b>Audio:</b> occlusion, reverb zones per room type and music streaming, written on top of FMOD.</li>
     <li><b>Levels:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, and splines for tracks and paths.</li>
     <li><b>Entities:</b> classic inheritance plus components and a transform hierarchy. A source generator registers a game's own entity types for scenes and the editor at compile time, with no runtime reflection, so it stays AOT-safe.</li>
     <li><b>Scenes:</b> <code>.krut</code>, Krut's own versioned scene format, layered on top of brush geometry.</li>
   </ul>
 
   <p class="small">
-    Built on: MonoGame, Jitter2, DotRecast, LiteNetLib, FMOD, ImGui.NET, AssimpNetter,
-    Sledge.Formats, xUnit.
+    Libraries: MonoGame (graphics API, windowing, input), Jitter2 (rigid bodies and joints for
+    physics props and ragdolls), DotRecast (navmesh generation and pathfinding), LiteNetLib (UDP
+    transport), FMOD (sound playback and mixing), AssimpNetter (model import), Sledge.Formats
+    (map file parsing), ImGui.NET (debug and editor UI), xUnit (tests).
   </p>
 </section>
 
@@ -120,7 +127,7 @@
     parameters.
   </p>
   <p>
-    The car runs on Krut's deterministic raycast-wheel physics, with suspension, tyre grip, weight
+    The car physics is my own deterministic raycast-wheel model, written for this game, with suspension, tyre grip, weight
     transfer and slip angles, aiming between arcade and sim. Because it's deterministic, the
     same code runs headless on a dedicated server per race, and clients only send their inputs.
     The netcode is tuned to feel right at 150&ndash;200&nbsp;ms ping. The loop goes matchmaking,
