@@ -127,12 +127,10 @@
     parameters.
   </p>
   <p>
-    The car physics is my own deterministic raycast-wheel model, written for this game, with suspension, tyre grip, weight
-    transfer and slip angles, aiming between arcade and sim. Because it's deterministic, the
-    same code runs headless on a dedicated server per race, and clients only send their inputs.
-    The netcode is tuned to feel right at 150&ndash;200&nbsp;ms ping. The loop goes matchmaking,
-    lobby, track vote, qualifying, race, results, and AI drivers use the same car simulation as
-    players.
+    The car physics is my own vehicle sim, written for this game: a kinematic simcade model with a 
+    friction ellipse, weight transfer, anti-roll, suspension, downforce, 
+    drafting and FWD, RWD or AWD drivetrains. It runs on a fixed step, so the same code runs headless on a dedicated server per race, 
+    and clients only send their inputs. The netcode is built for to support ping upwards 150-200 ms, while the racing still is smooth.
   </p>
 </section>
 
