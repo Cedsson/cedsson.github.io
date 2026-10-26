@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Krut, a 3D game engine in C#</title>
-<meta name="description" content="Krut.Engine, a 3D game engine in C# on MonoGame, and the games built on it: Commute, an FPS, and an online racing game. By William Eklund.">
+<meta name="description" content="Krut.Engine, a 3D game engine in C#, and the games built on it: Commute, an FPS, and an online racing game. By William Eklund.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,3 29,27 3,27%22 fill=%22%23c8452c%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,7 @@
 
 <section class="intro">
   <p>
-    <strong>Krut</strong> is a 3D game engine written in C#, on top of MonoGame. It's aimed at
+    <strong>Krut</strong> is a 3D game engine written in C#. It's aimed at
     first-person shooters, first-person melee games, 3D roguelikes and racing games.
   </p>
   <p>
@@ -35,7 +35,7 @@
     and below is what the engine does today, the games that run on it, and where it's going next.
   </p>
   <p class="facts">
-    C# / .NET 9 &middot; MonoGame 3.8.6 &middot; Vulkan with OpenGL fallback &middot; Native AOT &middot; ish 53k LOC &middot; Windows
+    C# / .NET 10 &middot; SDL &middot; Direct3D 12 or Vulkan &middot; Native AOT &middot; ish 58k LOC &middot; Windows
   </p>
 </section>
 
@@ -57,24 +57,29 @@
     further down, but the systems built on top of them are my own code.
   </p>
 
+  <p>
+    The target is a modern and optimized game engine. Based on the old school BSP workflow (Like Quake, Goldsrc, Source Engine and more). But with modern features like PBR, Realtime Lightning and a modern Forward+ Render.
+  </p>
+
   <ul>
-    <li><b>Rendering:</b> my own forward renderer with MSAA, PBR materials, dynamic soft shadows, particles, decals, bloom and colour grading. MonoGame only provides the graphics API layer.</li>
+    <li><b>Platform:</b> the engine owns its window, loop, GPU layer (<code>Krut.Engine.Gpu</code>) and input. Math is System.Numerics with a small supplement of its own. Debug UI is ImGui.</li>
+    <li><b>Rendering:</b> my own Forward+ (clustered forward) renderer with MSAA (2x, 4x or 8x), PBR for skinned models, cascaded sun shadows, a shadow atlas for spot and point lights, a depth pre-pass, particles, decals, bloom and colour grading.</li>
     <li><b>Lighting:</b> my own GI lightmapper that bakes the levels, light probes for moving objects, and light styles for flickering and switchable lights.</li>
-    <li><b>Graphics backends:</b> Vulkan first, with OpenGL as an automatic fallback in the same build. If Vulkan fails to start on a machine, the next launch uses OpenGL.</li>
-    <li><b>Visibility:</b> portal culling for indoor levels, plus occlusion culling.</li>
+    <li><b>Graphics backends:</b> Direct3D 12 or Vulkan, chosen with <code>-driver d3d12|vulkan</code>. Shaders are HLSL, compiled offline to DXIL and SPIR-V.</li>
+    <li><b>Visibility:</b> portal culling for indoor levels, plus frustum culling.</li>
     <li><b>Collision and movement:</b> my own capsule-vs-triangle collision against level geometry with a triangle BVH, and the character controller on top of it.</li>
     <li><b>Networking:</b> the client/server layer is mine: fixed tick, quantized messages, client prediction, reconciliation, snapshot interpolation, a jitter buffer and clock sync. LiteNetLib only carries the UDP packets.</li>
-    <li><b>Audio:</b> occlusion, reverb zones per room type and music streaming, written on top of FMOD.</li>
+    <li><b>Audio:</b> occlusion, reverb zones per room type and music streaming, on FMOD Core with WAV and Ogg decoding.</li>
     <li><b>Levels:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, and splines for tracks and paths.</li>
-    <li><b>Entities:</b> classic inheritance plus components and a transform hierarchy. A source generator registers a game's own entity types for scenes and the editor at compile time, with no runtime reflection, so it stays AOT-safe.</li>
-    <li><b>Scenes:</b> <code>.krut</code>, Krut's own versioned scene format, layered on top of brush geometry.</li>
+    <li><b>Entities:</b> classic entity inheritance.</li>
   </ul>
 
   <p class="small">
-    Libraries: MonoGame (graphics API, windowing, input), Jitter2 (rigid bodies and joints for
-    physics props and ragdolls), DotRecast (navmesh generation and pathfinding), LiteNetLib (UDP
-    transport), FMOD (sound playback and mixing), AssimpNetter (model import), Sledge.Formats
-    (map file parsing), ImGui.NET (debug and editor UI), xUnit (tests).
+    Libraries: SDL through ppy.SDL3-CS (windowing, input, GPU), SDL_shadercross (shader build),
+    Jitter2 (rigid bodies and joints for physics props and ragdolls), DotRecast (navmesh generation
+    and pathfinding), LiteNetLib (UDP transport), FMOD Core (sound playback and mixing), NVorbis
+    (Ogg decoding), StbImageSharp (image loading), AssimpNetter (model import), Sledge.Formats
+    (map file parsing), ImGui.NET (debug UI), xUnit (tests).
   </p>
 </section>
 
@@ -136,26 +141,19 @@
 
 <!-- ================= ROADMAP ================= -->
 <section class="project" id="next">
-  <h2>What's next: Krut 2.0</h2>
-  <p class="meta">in progress</p>
+  <h2>What's next</h2>
+  <p class="meta">after 2.0.0 &middot; in progress</p>
 
   <p>
-    Up to now, levels have been made in TrenchBroom and models in Blender, with the engine loading
-    the results. Krut 2.0 adds an editor of its own and makes the engine usable for other kinds of
-    3D games too.
+    Krut 2.0.0 was released on 2026-10-26 with a new GPU layer and Forward+ rendering.
+    Next is PBR for level geometry.
   </p>
 
   <ul>
-    <li><b>Krut Editor</b> <span class="status">building now</span><br>
-      Viewport, gizmos, outliner, an inspector generated from your own code, undo for everything, and saving to <code>.krut</code>. Dropping a model into the scene creates an entity for it.</li>
-    <li><b>Compile inside the editor</b> <span class="status">planned</span><br>
-      Build the game code from the editor and reload it without losing the open scene, and publish a Native AOT build from there.</li>
+    <li><b>PBR for level geometry</b> <span class="status">next</span><br>
+      Linear colour and HDR, normal maps and reflection probes, with Classic and Modern quality tiers.</li>
     <li><b>Terrain and roads</b> <span class="status">planned</span><br>
       Sculpting, layered texture painting, foliage scatter, and splines that carve roads into the terrain.</li>
-    <li><b>Forward+ rendering</b> <span class="status">planned</span><br>
-      Tiled light culling so a scene can have many more dynamic lights, while keeping MSAA.</li>
-    <li><b>Prefabs and play-in-editor</b> <span class="status">planned</span><br>
-      Rooms and kits as prefabs, which a seeded generator assembles into roguelike levels at runtime.</li>
   </ul>
 </section>
 
