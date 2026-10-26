@@ -1,5 +1,5 @@
-// Some browsers ignore autoplay even on muted videos, so kick them
-// when they scroll into view or on the first interaction.
+// Videos load nothing until they scroll into view, then play while visible
+// and pause when scrolled away, so the page stays light on first load.
 (function () {
   var videos = document.querySelectorAll('figure video');
   if (!videos.length) return;
@@ -13,16 +13,11 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) tryPlay(entry.target);
+        else entry.target.pause();
       });
     }, { threshold: 0.25 });
     videos.forEach(function (v) { io.observe(v); });
   } else {
     videos.forEach(tryPlay);
   }
-
-  ['click', 'touchstart', 'keydown', 'scroll'].forEach(function (evt) {
-    document.addEventListener(evt, function () {
-      videos.forEach(tryPlay);
-    }, { once: true, passive: true });
-  });
 })();

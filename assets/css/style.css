@@ -76,7 +76,24 @@ code {
 .top nav a { color: var(--ink-soft); }
 .top nav a:hover { color: var(--red); }
 
-.intro p:first-child { font-size: 1.15em; }
+.who {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.15em;
+}
+.who p { margin: 0; }
+.who img {
+  flex: none;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--ink);
+}
+
+@media (max-width: 520px) {
+  .who { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .who img { width: 96px; height: 96px; }
+}
 
 /* projects */
 
@@ -171,6 +188,11 @@ h2.divider + .small { margin-top: 4px; }
   color: var(--ink-soft);
   border-left: 3px solid var(--red);
   padding-left: 12px;
+}
+
+.links {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
 }
 
 .status {

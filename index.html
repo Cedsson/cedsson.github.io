@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Krut, a 3D game engine in C#</title>
-<meta name="description" content="Krut.Engine, a 3D game engine in C#, and the games built on it: Commute, an FPS, and an online racing game. By William Eklund.">
+<title>William Eklund, systems and game developer (C#/.NET)</title>
+<meta name="description" content="William Eklund, systems and game developer in C#/.NET: backend, cloud, networking and performance. Portfolio: Krut, a 3D game engine, and the games and backend built on it.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cedsson.github.io/">
+<meta property="og:title" content="William Eklund, systems and game developer (C#/.NET)">
+<meta property="og:description" content="Backend, cloud, networking and performance in C#/.NET. Portfolio: Krut, a 3D game engine, and the games and backend built on it.">
+<meta property="og:image" content="https://cedsson.github.io/assets/media/Racing-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,3 29,27 3,27%22 fill=%22%23c8452c%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,27 +22,53 @@
 <div class="page">
 
 <header class="top">
-  <a href="./" class="name"><span class="mark">&#9650;</span> Krut</a>
+  <a href="./" class="name"><span class="mark">&#9650;</span> William Eklund</a>
   <nav>
+    <a href="#skills">skills</a> /
     <a href="#engine">engine</a> /
     <a href="#games">games</a> /
+    <a href="#backend">backend</a> /
     <a href="#next">roadmap</a> /
     <a href="#contact">contact</a>
   </nav>
 </header>
 
 <section class="intro">
+  <div class="who">
+    <img src="assets/media/william.jpg" width="120" height="120" alt="William Eklund">
+    <p>
+      I'm <strong>William Eklund</strong>, a systems and game developer in Sweden working in C# and .NET:
+      backend, cloud, networking, performance and game engines.
+    </p>
+  </div>
   <p>
-    <strong>Krut</strong> is a 3D game engine written in C#. It's aimed at
-    first-person shooters, first-person melee games, 3D roguelikes and racing games.
-  </p>
-  <p>
-    I'm William, and I'm building it solo in in the sunny Sweden. Two games run on it so far,
-    and below is what the engine does today, the games that run on it, and where it's going next.
+    My largest project is <strong>Krut</strong>, a 3D game engine I build solo. Two games run on it
+    so far, one of them an online racing game with a dedicated server and a backend. Below is what
+    the engine does today, the games and backend built on it, and where it's going next.
   </p>
   <p class="facts">
-    C# / .NET 10 &middot; SDL &middot; Direct3D 12 or Vulkan &middot; Native AOT &middot; ish 58k LOC &middot; Windows
+    C# / .NET 10 &middot; ASP.NET Core &middot; PostgreSQL &middot; Docker &middot; Direct3D 12 or Vulkan &middot; Native AOT &middot; ~58k LOC
   </p>
+  <p class="links">
+    <a href="https://github.com/Cedsson" target="_blank" rel="noopener">GitHub</a> &middot;
+    <a href="https://www.linkedin.com/in/williamekl/" target="_blank" rel="noopener">LinkedIn</a> &middot;
+    <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>
+  </p>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="project" id="skills">
+  <h2>What the work shows</h2>
+  <p class="meta">skills, with where to find them below</p>
+
+  <ul>
+    <li><b>Architecture:</b> about 58k lines built and maintained alone, split into subsystems that only know about each other when they have to.</li>
+    <li><b>Testing:</b> xUnit tests for every subsystem that must pass before anything ships, and a deterministic simulation that can be tested headless.</li>
+    <li><b>Backend and data:</b> ASP.NET Core API, PostgreSQL with EF Core, an append-only ledger and exactly-once payouts, Steam sign-in.</li>
+    <li><b>Networking and distributed systems:</b> an authoritative server per race, client prediction and reconciliation, and HMAC-signed results that the backend verifies.</li>
+    <li><b>Cloud and operations:</b> Docker, self-hosted today and moving to Azure with infrastructure as code and GitHub Actions.</li>
+    <li><b>Performance:</b> my own Forward+ renderer on Direct3D 12 and Vulkan, and Native AOT builds.</li>
+  </ul>
 </section>
 
 <!-- ================= ENGINE ================= -->
@@ -58,7 +90,7 @@
   </p>
 
   <p>
-    The target is a modern and optimized game engine. Based on the old school BSP workflow (Like Quake, Goldsrc, Source Engine and more). But with modern features like PBR, Realtime Lightning and a modern Forward+ Render.
+    The target is a modern, optimized game engine built on the old-school BSP workflow (like Quake, GoldSrc and the Source engine), with modern features like PBR, real-time lighting and a Forward+ renderer.
   </p>
 
   <ul>
@@ -75,8 +107,8 @@
   </ul>
 
   <p class="small">
-      Libraries: SDL, Jitter2 (Physics Engine), Recast & Detour (navmesh generation
-      and pathfinding), LiteNetLib (Networking), FMOD Core (sound playback and mixing), NVorbis(Ogg decoding),AssimpNetter (model import),
+      Libraries: SDL, Jitter2 (physics engine), Recast &amp; Detour (navmesh generation
+      and pathfinding), LiteNetLib (networking), FMOD Core (sound playback and mixing), NVorbis (Ogg decoding), AssimpNetter (model import),
       ImGui.NET (debug UI), xUnit (tests).
   </p>
 </section>
@@ -89,7 +121,7 @@
   <p class="meta">single-player FPS &middot; prototype &middot; <a href="https://cedsson.itch.io/commute" target="_blank" rel="noopener">play the demo on itch.io</a></p>
 
   <figure>
-    <video src="assets/media/commute-gameplay.webm" poster="assets/media/commute-poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="Commute gameplay: combat inside a lowpoly subway station"></video>
+    <video src="assets/media/commute-gameplay.webm" poster="assets/media/commute-poster.jpg" loop muted playsinline preload="none" aria-label="Commute gameplay: combat inside a lowpoly subway station"></video>
     <figcaption>Fighting through the subway station level.</figcaption>
   </figure>
 
@@ -120,7 +152,7 @@
   <p class="meta">online multiplayer racing &middot; in development</p>
 
   <figure>
-    <video src="assets/media/Racing-Gameplay.webm" poster="assets/media/Racing-poster.png" autoplay loop muted playsinline preload="auto" aria-label="Low Poly Racer gameplay: a lowpoly car racing around a track"></video>
+    <video src="assets/media/Racing-Gameplay.webm" poster="assets/media/Racing-poster.jpg" loop muted playsinline preload="none" aria-label="Krut.Racing gameplay: a lowpoly car racing around a track"></video>
     <figcaption>Gameplay from the current build.</figcaption>
   </figure>
 
@@ -133,8 +165,30 @@
     The car physics is my own vehicle sim, written for this game: a kinematic simcade model with a 
     friction ellipse, weight transfer, anti-roll, suspension, downforce, 
     drafting and FWD, RWD or AWD drivetrains. It runs on a fixed step, so the same code runs headless on a dedicated server per race, 
-    and clients only send their inputs. The netcode is built for to support ping upwards 150-200 ms, while the racing still is smooth.
+    and clients only send their inputs. The netcode is built to keep racing smooth at pings of 150-200 ms.
   </p>
+</section>
+
+<!-- ================= BACKEND ================= -->
+<section class="project" id="backend">
+  <h2>Krut.Racing backend</h2>
+  <p class="meta">accounts, results, economy and server orchestration &middot; built, being connected</p>
+
+  <p>
+    The game server is authoritative for the race, and the backend is authoritative for everything
+    that outlives it. Clients never report their own results: when a race ends, the dedicated server
+    builds the result from its own state, signs it with HMAC-SHA256 and hands it to the backend, which
+    verifies the signature before anything is stored or paid out.
+  </p>
+
+  <ul>
+    <li><b>API:</b> ASP.NET Core, containerised with Docker, the same image locally and in the cloud.</li>
+    <li><b>Identity:</b> players sign in with a Steam session ticket that the backend verifies against the Steam Web API. Joining a race takes a ticket the race server checks.</li>
+    <li><b>Database:</b> PostgreSQL through EF Core with migrations: accounts, garage, race results and statistics.</li>
+    <li><b>Economy:</b> an append-only ledger instead of a balance column, and a race pays out exactly once, even if the server sends its result twice.</li>
+    <li><b>Server orchestration:</b> one headless server process per race, started for a match and stopped when it ends, with health checks so a crashed race is cleaned up.</li>
+    <li><b>Hosting:</b> runs on my own server today. Next it moves to Azure, with infrastructure as code, deploys from GitHub Actions, secrets in Key Vault, and tracing from the game server through the API into the database.</li>
+  </ul>
 </section>
 
 <!-- ================= ROADMAP ================= -->
@@ -150,6 +204,8 @@
   <ul>
     <li><b>PBR for level geometry</b> <span class="status">next</span><br>
       Linear colour and HDR, normal maps and reflection probes, with Classic and Modern quality tiers.</li>
+    <li><b>Connect the Krut.Racing backend</b> <span class="status">next</span><br>
+      The race server's signed results into the live backend, and a public leaderboard on this page.</li>
     <li><b>Terrain and roads</b> <span class="status">planned</span><br>
       Sculpting, layered texture painting, foliage scatter, and splines that carve roads into the terrain.</li>
   </ul>
@@ -159,13 +215,17 @@
   <h2>Contact</h2>
   <p>
     You can reach me by email at
-    <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>.
+    <a href="mailto:williameklund2@gmail.com">williameklund2@gmail.com</a>, or find me on
+    <a href="https://www.linkedin.com/in/williamekl/" target="_blank" rel="noopener">LinkedIn</a> and
+    <a href="https://github.com/Cedsson" target="_blank" rel="noopener">GitHub</a>.
   </p>
 </section>
 
 <footer>
   <p>
-    Krut is made by William Eklund. Elsewhere: <a href="https://cedsson.itch.io" target="_blank" rel="noopener">itch.io</a>.
+    Krut is made by William Eklund. Elsewhere: <a href="https://github.com/Cedsson" target="_blank" rel="noopener">GitHub</a>,
+    <a href="https://www.linkedin.com/in/williamekl/" target="_blank" rel="noopener">LinkedIn</a>,
+    <a href="https://cedsson.itch.io" target="_blank" rel="noopener">itch.io</a>.
   </p>
 </footer>
 
