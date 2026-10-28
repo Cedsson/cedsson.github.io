@@ -139,11 +139,15 @@ figure {
   margin: 0 0 24px;
 }
 
-figure video {
+figure video,
+figure img {
   display: block;
   width: 100%;
+  height: auto;
   background: #000;
-  border: 1px solid var(--ink);
+  /* Outline drawn inside, over the picture: a border loses its right edge when the width lands between device pixels (125 % scaling). */
+  outline: 1px solid var(--ink);
+  outline-offset: -1px;
 }
 
 figcaption {
