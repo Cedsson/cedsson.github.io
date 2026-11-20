@@ -59,14 +59,15 @@
 <!-- ================= SKILLS ================= -->
 <section class="project" id="skills">
   <h2>What the work shows</h2>
-  <p class="meta">overview</p>
+  <p class="meta">skills, with where to find them below</p>
 
   <ul>
-    <li><b>Architecture:</b> ~210k LOC in the engine (~350k+ total) built solo in modular subsystems.</li>
-    <li><b>Testing:</b> ~68k LOC of xUnit tests, deterministic headless simulation, and D3D12/Vulkan visual regression tests.</li>
-    <li><b>Backend &amp; data:</b> ASP.NET Core, PostgreSQL / EF Core, append-only ledger, Steam auth.</li>
-    <li><b>Networking:</b> authoritative servers, client prediction/reconciliation, HMAC-signed results (<a href="#netcode">Krut.Netcode</a>).</li>
-    <li><b>Performance:</b> Forward+ renderer, 131k GPU compute particles, zero-alloc hot paths, asset cooking, Native AOT.</li>
+    <li><b>Architecture:</b> ~210k LOC in the engine alone (~350k+ across engine, games and backend) built and maintained solo in decoupled subsystems.</li>
+    <li><b>Testing:</b> ~68k LOC of xUnit tests across engine and game logic, deterministic headless simulation, and golden-capture visual regression runner (<code>-lighttest</code>, <code>-capture</code>) across D3D12 and Vulkan.</li>
+    <li><b>Backend &amp; data:</b> ASP.NET Core API, PostgreSQL with EF Core, append-only ledger with idempotent exactly-once payouts, Steam sign-in.</li>
+    <li><b>Networking &amp; distributed systems:</b> authoritative server per race, client prediction and reconciliation, HMAC-SHA256 signed results (<a href="#netcode">Krut.Netcode</a>).</li>
+    <li><b>Cloud &amp; operations:</b> Docker, self-hosted today and moving to Azure with infrastructure as code, Key Vault, distributed tracing and GitHub Actions.</li>
+    <li><b>Performance:</b> custom tile + clustered Forward+ renderer and 131k GPU compute particles on D3D12/Vulkan, zero-alloc hot paths, background JIT warmup, <code>krut-cook</code> asset cooking, and Native AOT.</li>
   </ul>
 </section>
 
@@ -77,27 +78,29 @@
 
   <figure>
     <img src="assets/media/krut-showcase.jpg" width="1600" height="900" loading="lazy" alt="A sunlit stone courtyard rendered in Krut: a pergola casting striped shadows on cobblestones, three metal spheres on plinths, glowing light strips and a cloudy sky">
-    <figcaption>Courtyard rendered in Krut: PBR, POM, reflection probes, SSAO, SSR and HDRI sky.</figcaption>
+    <figcaption>Courtyard showcase in Krut: PBR materials, parallax occlusion mapping, reflection probes, SSAO, SSR and HDRI sky.</figcaption>
   </figure>
 
   <p>
-    A modular 3D engine built solo from scratch in C# (SDL3 / SDL_GPU, Native AOT).
-    Combines a TrenchBroom BSP workflow with a modern Forward+ PBR pipeline, GPU compute VFX, and structural destruction.
+    Modular 3D engine built solo from scratch in C# (SDL3 / SDL_GPU, Native AOT). Games include it as a git submodule, inherit a shared <code>Core</code> loop, and override what they need. Built on the Quake/GoldSrc/Source BSP workflow with modern Forward+ PBR rendering, GPU compute VFX, and structural destruction.
   </p>
 
   <ul>
-    <li><b>Backends &amp; clarity:</b> Direct3D 12 &amp; Vulkan (offline HLSL &rarr; DXIL/SPIR-V, hot-reload). MSAA 4x + SMAA/CMAA2, no TAA smear. Target: 144 fps @ 1440p (RTX 3060).</li>
-    <li><b>Forward+ &amp; PBR:</b> compute tile + clustered culling, Hi-Z &amp; portal light culling, render graph, unified Cook-Torrance GGX PBR with POM.</li>
-    <li><b>Lighting &amp; shadows:</b> custom GI lightmapper (directional + one-bounce), cascaded sun &amp; PCF shadow atlas, LTC area lights, contact &amp; translucent shadows, parallax probes.</li>
-    <li><b>Volumetrics &amp; GPU VFX:</b> froxel fog &amp; light shafts, 131k GPU compute particles (vector fields, lit smoke/fire), 3D decal volumes, volumetric liquid blood &amp; viewmodel gore.</li>
-    <li><b>Post-processing:</b> auto-exposure, 3D LUT zones, bokeh DoF, shockwave/heat-haze distortion, wet-lens blood, live quality tiers.</li>
-    <li><b>Destruction &amp; physics:</b> Voronoi-fractured walls with structural cascade collapse, triangle BVH capsule controller, Jitter2 rigid bodies, ragdolls, joints &amp; breakable compounds.</li>
-    <li><b>World, AI &amp; audio:</b> Gerstner water &amp; swimming, CDLOD terrain &amp; GPU foliage, DotRecast navmeshes with dynamic carving &amp; behavior trees, FMOD Core 2.03 with raycast occlusion.</li>
-    <li><b>UI &amp; pipeline:</b> custom GPU retained UI (<b>Kui</b> <code>.kui</code>/<code>.kss</code>), in-world screens &amp; camera feeds, dev console/profiler/inspector, <code>krut-cook</code> (KTX2, encrypted <code>.pak</code>).</li>
+    <li><b>Platform &amp; UI:</b> owns window, loop, GPU host (<code>Krut.Engine.Gpu</code>), <code>System.Numerics</code> math supplement, and input (input buffer, coyote-time queue, zoom-scaled sensitivity, raw gyro, aim assist). Custom GPU retained UI (<b>Kui</b> <code>.kui</code>/<code>.kss</code>, data bindings, hot-reload, gamepad focus nav, in-world <code>UiSurface</code>s, <code>SecondaryView</code> camera feeds, i18n with dynamic glyph atlas) plus <code>KuiDevTools</code> console, profiler and gizmo inspector; ImGui optional.</li>
+    <li><b>Backends &amp; image clarity:</b> Direct3D 12 or Vulkan (chosen live in options or via <code>-driver d3d12|vulkan</code>), offline-compiled HLSL (DXIL/SPIR-V) with live hot-reload and PSO cache pre-warming. MSAA (2x/4x/8x, 4x default) + sharp post-AA (SMAA, CMAA2) — no TAA, no upscaler smear. Target: 144 fps (6.9 ms) @ 1440p on an RTX 3060.</li>
+    <li><b>Forward+ &amp; PBR:</b> 32 px compute tile culling (per-tile depth slabs + 3D cluster fallback), Hi-Z GPU light occlusion culling, portal &amp; frustum culling, render graph with transient texture sharing, depth pre-pass, and in-pass viewmodel depth layering (zero depth clears). Unified Cook-Torrance GGX PBR (single energy split, multiple-scattering compensation, specular AA, POM, ORM, emissive) across levels, props and skinned models.</li>
+    <li><b>Lighting &amp; shadows:</b> custom GI lightmapper (<code>LightmapBaker</code>: directional lightmaps, one-bounce baked GI, decorrelated sky rays, switchable light styles, <code>AmbientLobe</code> baked specular), cascaded sun shadows &amp; PCF shadow atlas with per-face caching, LTC area lights (tubes, rectangles, disks), screen-space contact shadows, translucent shadow maps, procedural spot light cookies, per-cluster box-projected parallax reflection probes, and height-blended <code>AmbientColumn</code> light probes (models &amp; moving brushes).</li>
+    <li><b>Volumetrics, GPU VFX &amp; decals:</b> froxel volumetric fog &amp; local density volumes lit and shadowed by the sun, area tubes, cookies and combat lights; 131,072-capacity compute <code>GpuParticleSystem</code> (vector fields, curl turbulence, depth collision, GPU depth sort, lit soft smoke/fire injected into froxel fog), <code>RibbonRenderer</code> trails; 3D projective decal volumes (<code>DecalVolumeRenderer</code>), two-pass volumetric liquid blood decals (wet Fresnel, meniscus, growing pools, wall drips, edge-first drying), and per-part viewmodel gore stains.</li>
+    <li><b>Post-processing &amp; tiers:</b> linear HDR &amp; tonemapping, auto-exposure with per-zone EV bias, 3D <code>.cube</code> LUT colour-grading zones, bokeh DoF, wet-lens screen blood, explosion shockwave refraction &amp; heat-haze distortion, chromatic aberration, bloom, colour grading, and live runtime quality cost tiers (<code>r_tier</code>: Low–Ultra, every feature toggleable at runtime).</li>
+    <li><b>Destruction, physics &amp; movement:</b> Voronoi-fractured walls (<code>func_destructible</code>) with interior lightmap sampling, blast chipping, static support checks &amp; <code>CollapseCells</code> structural cascade releases; <code>FuncGlass</code> panes &amp; <code>BreakableBody</code> compounds. Swept capsule character controller (<code>CharacterMotor</code>) over a custom triangle BVH; Jitter2 rigid bodies, ragdolls with threading hysteresis, physics dragger, surface materials, and <code>JointManager</code> constraints (hinges, ball-sockets, sliders, springs).</li>
+    <li><b>World, water &amp; terrain:</b> TrenchBroom <code>.map</code>/<code>.bsp</code> import, movers (sliding/rotating doors, platforms, trains), prefabs, 3D splines (<code>SplinePath</code>, <code>CinematicCameraTrack</code>), opt-in <code>func_water</code> volumes (Gerstner waves with CPU buoyancy twin, Beer-Lambert absorption, refraction, SSR, procedural caustics, swimming), quadtree CDLOD heightmap terrain with PBR splatting &amp; GPU-instanced wind foliage, Rayleigh/Mie <code>CelestialSky</code>, and dynamic weather with surface wetness.</li>
+    <li><b>AI &amp; audio:</b> DotRecast navmesh generation, off-thread dynamic obstacle carving, <code>SampleCover</code> tactical cover queries, <code>Perception</code> (view cone &times; LOS &times; player irradiance query + <code>NoiseBus</code> hearing), and allocation-free <code>BehaviorTree</code> agents with typed blackboards. FMOD Core 2.03 mixer hierarchy (zero <code>.bank</code> dependency), 3D rolloff, raycast acoustic occlusion (per-voice low-pass/gain), <code>env_reverb_zone</code> room reverb, DSP chains, and beat/bar-synced <code>InteractiveMusic</code> stem cross-fades.</li>
+    <li><b>Assets, streaming &amp; diagnostics:</b> background JIT warmup, first-shot &amp; fracture load pre-warming, async asset loader, <code>krut-cook</code> offline cooker (BC1–BC7 KTX2 textures, cooked meshes/anims, collision/nav caches), AES-256-GCM encrypted <code>assets.pak</code>, texture mip streaming, mesh LOD/HLOD, world-cell software occlusion, versioned async save snapshots, crash minidumps, and deterministic golden-capture regression runner (<code>-lighttest</code>, <code>-capture</code>, <code>-hidden</code>).</li>
+    <li><b>Networking:</b> custom fixed-tick client/server layer (quantized messages, prediction, reconciliation, snapshot interpolation, jitter buffer, clock sync) over LiteNetLib UDP — extracted into <a href="#netcode">Krut.Netcode</a>.</li>
   </ul>
 
   <p class="small">
-    Libraries: SDL3, Jitter2, DotRecast, LiteNetLib, FMOD Core 2.03, NVorbis, AssimpNetter, Sledge.Formats, StbImageSharp, ImGui.NET, xUnit.
+    Libraries: SDL3 / ppy.SDL3-CS, Jitter2, DotRecast, LiteNetLib, FMOD Core 2.03, NVorbis, AssimpNetter, Sledge.Formats, StbImageSharp, ImGui.NET, xUnit.
   </p>
 </section>
 
@@ -107,13 +110,17 @@
   <p class="meta">open source library &middot; <a href="https://github.com/Cedsson/Krut.Netcode" target="_blank" rel="noopener">GitHub</a> &middot; MIT</p>
 
   <p>
-    Engine-agnostic authoritative multiplayer netcode library for .NET on LiteNetLib, extracted from Krut.Racing.
+    Engine-agnostic authoritative-server netcode library for .NET on LiteNetLib, extracted from Krut.Racing. Games define their own messages, snapshots and simulation step while Krut.Netcode handles the wire protocol, clock sync, rollbacks, interpolation and link degradation.
   </p>
 
   <ul>
-    <li><b>Sessions &amp; clock sync:</b> handshakes, auto-reconnect, fixed tick loop, and NTP-style median clock sync.</li>
-    <li><b>Prediction &amp; interpolation:</b> tick rollback, input replay and smooth correction blending; snapshot interpolation with bounded extrapolation.</li>
-    <li><b>Zero-alloc &amp; link simulator:</b> 0 B steady-state GC, Native AOT-ready, with built-in latency, jitter and packet-loss simulation.</li>
+    <li><b>Authoritative server &amp; sessions:</b> protocol versioning handshake, app-id validation, rejection reasons, peer tracking and auto-reconnect.</li>
+    <li><b>Fixed tick &amp; clock sync:</b> frame-rate independent fixed tick with catch-up capping; NTP-style median clock sync over lowest-RTT samples.</li>
+    <li><b>Client prediction &amp; reconciliation:</b> instant local inputs, tick rewind on authoritative snapshots, unacknowledged input replay, and smooth correction blending.</li>
+    <li><b>Snapshot interpolation:</b> state-ring buffer interpolating remote entities in the past with bounded extrapolation under packet jitter.</li>
+    <li><b>Zero-allocation messaging:</b> pooled <code>NetDataReader</code>/<code>NetDataWriter</code> serialization — 0 B steady-state GC allocations.</li>
+    <li><b>Link simulator:</b> built-in latency, jitter, packet-loss bursts, duplication, reordering and outage simulation (presets or <code>KRUT_NET_*</code> env vars).</li>
+    <li><b>Modern .NET &amp; Native AOT:</b> reflection-free, <code>System.Numerics</code>, xUnit tests, BenchmarkDotNet suites, and headless multi-client prediction demo.</li>
   </ul>
 </section>
 
@@ -130,16 +137,15 @@
   </figure>
 
   <p>
-    Started as a 10-minute playable vertical slice on itch.io (v1.8) and expanded on <b>Krut.Engine 3.2</b>
-    into a photoreal PBR shooter with structural destruction and 100% procedural combat VFX generated in code.
+    Started as a 10-minute playable vertical slice for Krut.Engine 1.8 (<i>Subway Station</i>: ticket hall, platform, tunnels and depot with TrenchBroom geometry, baked GI, button puzzles, live wires and explosive barrels) and expanded on <b>Krut.Engine 3.2</b> into a photoreal full-PBR shooter with structural destruction and 100% code-generated procedural combat VFX (no external FX texture packs).
   </p>
 
   <ul>
-    <li><b>Destruction &amp; collapse:</b> walls shatter into lit concrete chunks with bending steel rebar, sliding debris, and support-graph building collapse (<i>Villa</i>).</li>
-    <li><b>GPU smoke &amp; explosions:</b> lingering room smoke pushed by player wake, blasts and bullets via vector fields; shrapnel-traced explosions with shockwave distortion.</li>
-    <li><b>Weapons &amp; ballistics:</b> tactical arsenal with layered animations, spring recoil and camera punches; multi-wall bullet penetration and physical door/crate breach kicks.</li>
-    <li><b>Blood &amp; gore:</b> directional blood mist, exit-wound wall spatter, growing volumetric liquid blood pools under corpses, dismemberment, and weapon/glove blood stains.</li>
-    <li><b>Squad AI &amp; world:</b> behavior-tree squad AI with light-based stealth, dynamic navmesh door carving, and live 3D CCTV feeds on shootable monitors.</li>
+    <li><b>Destruction &amp; structural collapse:</b> fracture walls (<code>func_destructible</code>) shatter into jagged pieces with rough-concrete interiors, baked light on loose chunks, chips sliding off standing ledges, and procedural steel rebar that bends or snaps across shot holes. A flood-filled support graph over walls, pillars, ceilings and glass collapses unsupported roofs and upper floors in staggered cascades with creaks, dust and shake (showcased in the generated destructible <i>Villa</i> map and <i>Devmap</i>).</li>
+    <li><b>Procedural GPU smoke &amp; shrapnel explosions:</b> gunfights fill rooms with lingering GPU smoke that scatters light shafts in froxel fog and reacts to four live vector fields (player wake, blast waves, passing bullets). Explosions combine a black-body fireball, floor dust ring, exposure punch, screen-space shockwave refraction &amp; heat haze, scorch marks, and traced metal shrapnel fragments that pepper walls and enemies.</li>
+    <li><b>Weapons, ballistics &amp; breach kicks:</b> tactical viewmodel arsenal (knife, WK-11 Viper pistol, AK-105 rifle, Herrington 11-87 shell-by-shell pump shotgun, Mk14 EBR DMR, grenades — plus baton, SMG &amp; grenade launcher in the v1.8 demo) with layered animations, second-order spring sway/recoil, per-shot and reload-beat camera punches, ADS, shell casings, tracers, hitmarkers, hit-stop, and continuous barrel-smoke heat ribbons. Multi-wall bullet penetration (up to 3 surfaces by material thickness) and a physical breach kick (<code>F</code>) that shoves enemies, smashes multi-plank crates (<code>BreakableBody</code>), and kicks locked physics doors off their hinges.</li>
+    <li><b>Forensic blood &amp; gore:</b> directional aerosol blood mist and drop cones, seeded exit-wound wall spatter streaks with drips, two-pass volumetric liquid blood pools that grow under settled ragdolls and dry from the edges inward, dismemberment, wet-lens screen blood on close kills, and per-part blood stains across the weapon, blade and gloves.</li>
+    <li><b>Behavior-tree squad AI &amp; interactive world:</b> melee, ranged and beeping suicide-bomber enemies driven by reactive behavior trees with shared squad blackboards (front-holder claims, flanking, sighting call-outs, hazard avoidance, clear-LOS grenade throws). Sight samples the player's actual scene luminance (hiding in dark shadows works until a muzzle flash lights you), gunfire propagates over an attenuated <code>NoiseBus</code>, closed doors and crates dynamically carve the navmesh (enemies open or kick down locked doors blocking their path), shootable pendulum lamps swing and spark out, and live 3D CCTV cameras stream onto shootable in-world <code>UiSurface</code> monitors.</li>
   </ul>
 </section>
 
@@ -154,24 +160,23 @@
   </figure>
 
   <p>
-    An online spec racer where every car has identical server-enforced performance. Features my own fixed-step
-    kinematic simcade vehicle physics (friction ellipse, weight transfer, suspension, downforce, drafting,
-    FWD/RWD/AWD) running headless on a dedicated server per race, smoothed up to 150–200 ms ping via <a href="#netcode">Krut.Netcode</a>.
+    Online spec racer where every car has identical server-enforced performance (cosmetics and sound only on clients). Runs my own fixed-step kinematic simcade vehicle physics — friction ellipse, weight transfer, anti-roll, suspension, downforce, drafting, and FWD/RWD/AWD drivetrains — headless on a dedicated server per race, keeping racing smooth at 150–200 ms ping via <a href="#netcode">Krut.Netcode</a>.
   </p>
 </section>
 
 <!-- ================= BACKEND ================= -->
 <section class="project" id="backend">
   <h2>Krut.Racing backend</h2>
-  <p class="meta">accounts, economy and server orchestration &middot; built, being connected</p>
+  <p class="meta">accounts, results, economy and server orchestration &middot; built, being connected</p>
 
   <p>
-    Clients never report results: the dedicated race server signs match results with HMAC-SHA256, and the backend verifies them before storing stats or paying out.
+    The race server is authoritative for the match; the backend is authoritative for everything persistent. Clients never report results — the dedicated server builds the match result, signs it with HMAC-SHA256, and submits it to the backend for verification and payout.
   </p>
 
   <ul>
-    <li><b>Stack:</b> Dockerised ASP.NET Core API, PostgreSQL with EF Core migrations, and Steam Web API session ticket auth.</li>
-    <li><b>Economy &amp; orchestration:</b> append-only ledger with idempotent exactly-once race payouts, and per-match headless server spawning with health-check cleanup.</li>
+    <li><b>API &amp; identity:</b> Dockerised ASP.NET Core API; players sign in via Steam session tickets verified against the Steam Web API, and race servers validate match join tickets.</li>
+    <li><b>Database &amp; economy:</b> PostgreSQL via EF Core migrations (accounts, garage, results, stats) and an append-only ledger with idempotent, exactly-once race payouts.</li>
+    <li><b>Orchestration &amp; hosting:</b> one headless server process spawned per match with health-check cleanup; self-hosted today and moving to Azure with IaC, GitHub Actions, Key Vault, and end-to-end distributed tracing.</li>
   </ul>
 </section>
 
